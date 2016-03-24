@@ -44,5 +44,43 @@ def reverse(tf):
     time.sleep(tf)
     gpio.cleanup()
 
-forward(4)
-reverse(4)
+def left(tf):
+    init()
+
+    # GPIO 15 => IN1 => OUT1 => ENB
+    gpio.output(15, True)
+
+    # GPIO 13 => IN2 => OUT2 => ENB
+    gpio.output(13, False)
+
+    # GPIO 11 => IN3 => OUT3 => ENA
+    gpio.output(11, False)
+
+    # GPIO 7 => IN4 => OUT4 => ENA
+    gpio.output(7, False)
+
+    time.sleep(tf)
+    gpio.cleanup()      
+
+def right(tf):
+    init()
+
+    # GPIO 15 => IN1 => OUT1 => ENB
+    gpio.output(15, False)
+
+    # GPIO 13 => IN2 => OUT2 => ENB
+    gpio.output(13, False)
+
+    # GPIO 11 => IN3 => OUT3 => ENA
+    gpio.output(11, True)
+
+    # GPIO 7 => IN4 => OUT4 => ENA
+    gpio.output(7, False)
+
+    time.sleep(tf)
+    gpio.cleanup()
+
+forward(3)
+reverse(3)
+left(2)
+right(2)
