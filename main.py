@@ -122,39 +122,10 @@ def pivot_right(tf):
 # The getch method can determine which key has been pressed
 # by the user on the keyboard by accessing the system files
 # It will then return the pressed key as a variable
-
-# Main Loop
-#try: 
-#   #stime = 0.05
-#   #forward(stime)
-#   while True:
-#      key = getch()
-#      print "you pressed:", key
-#      if   (key.lower() == 'e'):
-#            forward(1)
-#      elif (key.lower() == 'd'):
-#            reverse(1)
-#      elif (key.lower() == 's'):
-#            left(1)
-#      elif (key.lower() == 'f'):
-#            right(1)
-#      elif (key.lower() == 'w'):
-#            pivot_left(1)
-#      elif (key.lower() == 'r'):
-#            pivot_right(1)
-#      elif (key.lower() == 'c'):
-#            gpio.cleanup()
-#      elif (key.lower() == 'x'):
-#            break
-#except KeyboardInterrupt:
-#      gpio.cleanup()
-
-
 try:
-   print "Testing char input"
    fd = sys.stdin.fileno()
    old_settings = termios.tcgetattr(fd)
-   stime = 0.030  #sleep time
+   stime = 0.3  #sleep time
    while(True):
       tty.setraw(sys.stdin.fileno())
       key = sys.stdin.read(1)
