@@ -16,7 +16,7 @@ def init():
 
 # All Wheels Turn Forwards
 def forward(tf):
-
+    
     # GPIO 15 => IN1 => OUT1 => ENB
     gpio.output(15, True)
  
@@ -30,7 +30,6 @@ def forward(tf):
     gpio.output(7, False)
     
     time.sleep(tf)
-    gpio.cleanup()
 
 # All Wheels Turn Backwards
 def reverse(tf):
@@ -48,7 +47,6 @@ def reverse(tf):
     gpio.output(7, True)
 
     time.sleep(tf)
-    gpio.cleanup()
 
 # Right Wheels Turn Forward
 def left(tf):
@@ -66,7 +64,6 @@ def left(tf):
     gpio.output(7, False)
 
     time.sleep(tf)
-    gpio.cleanup()      
 
 # Left Wheels Move Forward
 def right(tf):
@@ -84,11 +81,10 @@ def right(tf):
     gpio.output(7, False)
 
     time.sleep(tf)
-    gpio.cleanup()
 
 # Right Wheels Turn Forward
 # Left Wheels Turn Backward
-def pivot_right(tf):
+def pivot_left(tf):
 
     # GPIO 15 => IN1 => OUT1 => ENB
     gpio.output(15, True)
@@ -103,11 +99,10 @@ def pivot_right(tf):
     gpio.output(7, True)
 
     time.sleep(tf)
-    gpio.cleanup()
 
 # Right Wheels Turn Backward
 # Left Wheels Turn Forward
-def pivot_left(tf):
+def pivot_right(tf):
 
     # GPIO 15 => IN1 => OUT1 => ENB
     gpio.output(15, False)
@@ -122,25 +117,11 @@ def pivot_left(tf):
     gpio.output(7, False)
 
     time.sleep(tf)
-    gpio.cleanup()
 
 
 # The getch method can determine which key has been pressed
 # by the user on the keyboard by accessing the system files
 # It will then return the pressed key as a variable
-def getch():
-    init()
-    #fd = sys.stdin.fileno()
-    #old_settings = termios.tcgetattr(fd)
-    #try:
-    #    print("Enter Command")
-    #    tty.setraw(sys.stdin.fileno())
-    #    ch = sys.stdin.read(1)
-    #finally:
-    #    termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-    #return ch
-    return 'h'
-
 
 # Main Loop
 #try: 
@@ -168,30 +149,41 @@ def getch():
 #except KeyboardInterrupt:
 #      gpio.cleanup()
 
-#c = 0
-#try:
-#   while ( c < 3 ):
-#     key = getch()
-#     getch()
-#     forward(1)
-#     reverse(1)
-#     c += 1
-#except KeyboardInterrupt:
-#     gpio.cleanup()
 
 try:
    print "Testing char input"
    fd = sys.stdin.fileno()
    old_settings = termios.tcgetattr(fd)
-   tty.setraw(sys.stdin.fileno())
-   key = sys.stdin.read(1)
-   print key
-   if (key.lower() == 'f'):
+   stime = 0.030  #sleep time
+   while(True):
+      tty.setraw(sys.stdin.fileno())
+      key = sys.stdin.read(1)
+      print key
       init()
-      forward(1)
+      if (key.lower() == 'e'):
+         forward(stime)
+      elif (key.lower() == 'd'):
+         reverse(stime)
+      elif (key.lower() == 's'):
+         left(stime)
+      elif (key.lower() == 'f'):
+         right(stime)
+      elif (key.lower() == 'w'):
+         pivot_left(stime)
+      elif (key.lower() == 'r'):
+         pivot_right(stime)
+      elif (key.lower() == 'x'):
+         break
+      
+      # Restore settings and gpio pins
+      # Prior to next iteration
+      termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+      gpio.cleanup()
+
 except KeyboardInterrupt:
    termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
    gpio.cleanup()
+
 finally:
    termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
    gpio.cleanup()
