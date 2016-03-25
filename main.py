@@ -16,8 +16,7 @@ def init():
 
 # All Wheels Turn Forwards
 def forward(tf):
-    #init()
-   
+
     # GPIO 15 => IN1 => OUT1 => ENB
     gpio.output(15, True)
  
@@ -35,7 +34,6 @@ def forward(tf):
 
 # All Wheels Turn Backwards
 def reverse(tf):
-    #init()
 
     # GPIO 15 => IN1 => OUT1 => ENB
     gpio.output(15, False)
@@ -54,7 +52,6 @@ def reverse(tf):
 
 # Right Wheels Turn Forward
 def left(tf):
-    #init()
 
     # GPIO 15 => IN1 => OUT1 => ENB
     gpio.output(15, True)
@@ -73,7 +70,6 @@ def left(tf):
 
 # Left Wheels Move Forward
 def right(tf):
-    #init()
 
     # GPIO 15 => IN1 => OUT1 => ENB
     gpio.output(15, False)
@@ -93,7 +89,6 @@ def right(tf):
 # Right Wheels Turn Forward
 # Left Wheels Turn Backward
 def pivot_right(tf):
-    #init()
 
     # GPIO 15 => IN1 => OUT1 => ENB
     gpio.output(15, True)
@@ -113,7 +108,6 @@ def pivot_right(tf):
 # Right Wheels Turn Backward
 # Left Wheels Turn Forward
 def pivot_left(tf):
-    #init()
 
     # GPIO 15 => IN1 => OUT1 => ENB
     gpio.output(15, False)
@@ -148,27 +142,28 @@ def getch():
 
 
 # Main Loop
-stime = 0.030
-init()
-try:
+try: 
+   init()
+   stime = 0.05
+   #forward(stime)
    while True:
       key = getch()
+      print("you pressed", key)
       if   (key.lower() == 'e'):
-            forward(stime)
+            forward(1)
       elif (key.lower() == 'd'):
-            reverse(stime)
+            reverse(1)
       elif (key.lower() == 's'):
-            left(stime)
+            left(1)
       elif (key.lower() == 'f'):
-            right(stime)
+            right(1)
       elif (key.lower() == 'w'):
-            pivot_left(stime)
+            pivot_left(1)
       elif (key.lower() == 'r'):
-            pivot_right(stime)
+            pivot_right(1)
       elif (key.lower() == 'x'):
+            gpio.cleanup()
             break
 except KeyboardInterrupt:
-      gpio.cleanup()
-finally:
       gpio.cleanup()
 
